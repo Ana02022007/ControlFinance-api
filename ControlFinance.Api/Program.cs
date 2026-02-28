@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using ControlFinance.Application;
+using ControlFinance.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

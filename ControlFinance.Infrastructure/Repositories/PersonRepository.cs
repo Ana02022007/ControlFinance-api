@@ -18,11 +18,18 @@ namespace ControlFinance.Infrastructure.Repositories
             _context.Set<Person>()
                     .Include(p => p.Transaction);
 
-        // Método para excluir uma pessoa do banco de dados, incluindo suas transações associadas
-        public void DeletePersonWithTransactions(int personId)
+        // Método para buscar uma pessoa do banco de dados, incluindo suas transações associadas
+        public async Task<Person?> GetPersonWithTransactions(int personId)
         {
-            _context.Set<Person>().Include(p => p.Transaction)
-                    .FirstOrDefault(p => p.Id == personId);
+            return await _context.Set<Person>()
+                .Include(p => p.Transaction)
+                .FirstOrDefaultAsync(p => p.Id == personId);
+        }
+        public async Task<List<Person>> GetAllWithTransactions()
+        {
+            return await _context.Set<Person>()
+                .Include(p => p.Transaction)
+                .ToListAsync();
         }
     }
 }

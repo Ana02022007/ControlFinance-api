@@ -17,5 +17,6 @@ namespace ControlFinance.Infrastructure.Repositories
         protected override IQueryable<Transaction> QueryableList =>
             _context.Set<Transaction>()
                     .Include(p => p.Category);
+   
     }
 }

@@ -29,14 +29,14 @@ namespace ControlFinance.Domain.Entities
         public TypeTransaction Type { get; set; }
 
         //referência à pessoa associada à transação, usando chave estrangeira para estabelecer a relação
-        [ForeignKey(nameof(PersonId))]
         public int PersonId { get; set; }
+        [ForeignKey(nameof(PersonId))]
         public Person Person { get; set; }
 
         //referência à categoria associada à transação, usando chave estrangeira para estabelecer a relação e obrigatória
         [Required]
-        [ForeignKey(nameof(CategoriesId))]
         public int CategoriesId { get; set; }
+        [ForeignKey(nameof(CategoriesId))]
         public Category Category { get; set; }
 
     }

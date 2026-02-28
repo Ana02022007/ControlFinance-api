@@ -1,5 +1,6 @@
 ﻿using ControlFinance.Domain.Entities;
 using ControlFinance.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControlFinance.Infrastructure.Repositories
 {
@@ -13,5 +14,12 @@ namespace ControlFinance.Infrastructure.Repositories
 
         protected override IQueryable<Category> QueryableList =>
             _context.Set<Category>();
+
+        public async Task<List<Category>> GetAllWithTransactions()
+        {
+            return await _context.Set<Category>()
+                .Include(p => p.Transactions)
+                .ToListAsync();
+        }
     }
 }

@@ -18,5 +18,7 @@ namespace ControlFinance.Domain.Entities
         //propósito da categoria, obrigatório e do tipo enum para indicar se é uma receita, despesa ou ambas
         [Required]
         public CategoryPurpose Purpose { get; set; }
+
+        public List<Transaction> Transactions { get; set; }
     }
 }

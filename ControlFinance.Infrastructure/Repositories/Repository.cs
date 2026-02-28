@@ -1,3 +1,4 @@
+using ControlFinance.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 // Repositório genérico para operações CRUD, implementando a interface IRepository<T>

@@ -1,28 +1,23 @@
 ﻿using ControlFinance.Application.DTOs.DTOTransaction;
-using ControlFinance.Domain.Entities;
 using Transaction = ControlFinance.Domain.Entities.Transaction;
 
 namespace ControlFinance.Application.Mappers
 {
     public static class TransactionMapper
     {
-        //public static Transaction ConvertToEntity(this TransactionRequest request)
-        //{
-        //    Transaction transaction = new();
-        //    transaction = request.ConvertToEntity(transaction);
-        //    return transaction;
-        //}
         public static Transaction ConvertToEntity(this TransactionRequest request)
         {
-            return new Transaction
-            {
-                Description = request.Description,
-                Value = request.Value,
-                Date = request.Date,
-                Type = request.Type,
-                PersonId = request.PersonId,
-                CategoriesId = request.CategoriesId
-            };
+               return request.ConvertToEntity(new Transaction());
+        }
+        public static Transaction ConvertToEntity(this TransactionRequest request, Transaction transaction)
+        {
+            transaction.Description = request.Description;
+            transaction.Value = request.Value;
+            transaction.Date = request.Date;
+            transaction.Type = request.Type;
+            transaction.PersonId = request.PersonId;
+            transaction.CategoriesId = request.CategoriesId;
+            return transaction;
         }
         public static TransactionResponse ConvertToResponse(this Transaction transaction)
         {
@@ -37,7 +32,7 @@ namespace ControlFinance.Application.Mappers
                 CategoriesId = transaction.CategoriesId
             };
         }
-        public static TransactionListResponse ConvertToListResponse(Transaction transaction)
+        public static TransactionListResponse ConvertToListResponse(this Transaction transaction)
         {
             return new TransactionListResponse
             {
