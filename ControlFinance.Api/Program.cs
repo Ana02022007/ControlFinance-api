@@ -16,6 +16,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactDev", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173") // Vite
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
+
 var app = builder.Build();
 
 app.UseSwagger();
