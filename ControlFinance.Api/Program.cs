@@ -2,20 +2,27 @@ using Microsoft.EntityFrameworkCore;
 using ControlFinance.Application;
 using ControlFinance.Infrastructure;
 
+// Cria o builder da aplicação ASP.NET.
 var builder = WebApplication.CreateBuilder(args);
 
+// Registra suporte a controllers.
 builder.Services.AddControllers();
 
+// Configura o DbContext com SQLite e assembly de migrations.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=ControlFinance.db",
         b => b.MigrationsAssembly("ControlFinance.Infrastructure")));
 
+// Registra serviços de documentação da API.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Registra dependências da camada de aplicação.
 builder.Services.AddApplication();
+// Registra dependências da camada de infraestrutura.
 builder.Services.AddInfrastructure();
 
+// Configura política de CORS para o front-end em desenvolvimento.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactDev", policy =>
@@ -29,15 +36,20 @@ builder.Services.AddCors(options =>
 
 
 
+// Constrói o pipeline HTTP da aplicação.
 var app = builder.Build();
 
+// Habilita geração da documentação Swagger.
 app.UseSwagger();
 app.UseSwaggerUI();
 
+// Força redirecionamento para HTTPS.
 app.UseHttpsRedirection();
 
+// Mapeia os endpoints dos controllers.
 app.MapControllers();
 
+// Inicia a aplicação.
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

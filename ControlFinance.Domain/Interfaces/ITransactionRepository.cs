@@ -2,7 +2,7 @@
 
 namespace ControlFinance.Domain.Interfaces
 {
-    // Interface para o repositório de transações, herda os métodos do repositório genérico IRepository<Transaction>
+    // Define operações específicas de repositório para transações.
     public interface ITransactionRepository : IRepository<Transaction>
     {
     }

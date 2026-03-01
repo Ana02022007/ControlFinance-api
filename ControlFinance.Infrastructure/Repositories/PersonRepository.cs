@@ -4,29 +4,33 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ControlFinance.Infrastructure.Repositories
 {
-    // RepositÛrio especÌfico para a entidade Person, herda os mÈtodos do repositÛrio genÈrico Repository<Person> e implementa a interface IPersonRepository
+    // Reposit√≥rio de pessoas com opera√ß√µes espec√≠ficas para agregados.
     public class PersonRepository : Repository<Person>, IPersonRepository
-    {// Construtor que recebe o AppDbContext como dependÍncia e passa para a classe base Repository<Person>
+    {
+        // Recebe o contexto e repassa para o reposit√≥rio gen√©rico.
         public PersonRepository(AppDbContext context) : base(context) { }
-        // Propriedades que sobrescrevem as propriedades virtuais da classe base Repository<Person> para incluir o relacionamento com a entidade Transaction
+
+        // Consulta base para pessoa j√° incluindo transa√ß√µes.
         protected override IQueryable<Person> Queryable =>
             _context.Set<Person>()
                     .Include(p => p.Transaction);
 
-        // Propriedade para lista que inclui o relacionamento com a entidade Transaction, permitindo obter uma lista de pessoas com suas transaÁıes associadas
+        // Consulta de listagem para pessoa j√° incluindo transa√ß√µes.
         protected override IQueryable<Person> QueryableList =>
             _context.Set<Person>()
                     .Include(p => p.Transaction);
 
-        // MÈtodo para buscar uma pessoa do banco de dados, incluindo suas transaÁıes associadas
         public async Task<Person?> GetPersonWithTransactions(int personId)
         {
+            // Busca uma pessoa espec√≠fica com suas transa√ß√µes.
             return await _context.Set<Person>()
                 .Include(p => p.Transaction)
                 .FirstOrDefaultAsync(p => p.Id == personId);
         }
+
         public async Task<List<Person>> GetAllWithTransactions()
         {
+            // Retorna todas as pessoas com suas transa√ß√µes.
             return await _context.Set<Person>()
                 .Include(p => p.Transaction)
                 .ToListAsync();

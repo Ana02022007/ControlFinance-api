@@ -2,12 +2,16 @@
 
 namespace ControlFinance.Application.DTOs.DTOPerson
 {
-    /// Classe de resposta para a entidade "Person" em uma lista, contendo as propriedades que serão retornadas ao cliente ao solicitar uma lista de pessoas
+    // DTO usado para listar pessoas.
     public class PersonListResponse
     {
+        // Identificador único da pessoa.
         public int Id { get; set; }
+        // Nome da pessoa.
         public string Name { get; set; }
+        // Data de nascimento da pessoa.
         public DateTime BirthDate { get; set; }
+        // Lista resumida de transações relacionadas à pessoa.
         public List<TransactionListResponse> Transaction { get; set; }
     }
 }

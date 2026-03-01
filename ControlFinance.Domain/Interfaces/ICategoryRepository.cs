@@ -2,9 +2,10 @@
 
 namespace ControlFinance.Domain.Interfaces
 {
-    // Interface para o repositório de categorias, herda os métodos do repositório genérico IRepository<Category>
+    // Define operações específicas de repositório para categorias.
     public interface ICategoryRepository : IRepository<Category>
     {
+        // Retorna todas as categorias incluindo suas transações.
         Task<List<Category>> GetAllWithTransactions();
 
     }

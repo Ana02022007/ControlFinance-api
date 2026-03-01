@@ -2,10 +2,12 @@
 
 namespace ControlFinance.Domain.Interfaces
 {
-    // Interface para o repositório de pessoas, herda os métodos do repositório genérico IRepository<Person>
+    // Define operações específicas de repositório para pessoas.
     public interface IPersonRepository : IRepository<Person>
     {
+        // Busca uma pessoa incluindo suas transações.
         Task<Person?> GetPersonWithTransactions(int personId);
+        // Retorna todas as pessoas incluindo suas transações.
         Task<List<Person>> GetAllWithTransactions();
     }
 }

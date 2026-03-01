@@ -1,53 +1,57 @@
 using ControlFinance.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-// RepositÛrio genÈrico para operaÁıes CRUD, implementando a interface IRepository<T>
+// Implementa opera√ß√µes CRUD gen√©ricas para qualquer entidade.
 public class Repository<T> : IRepository<T> where T : class
 {
-    // Campos protegidos para o contexto do banco de dados e o DbSet<T> correspondente ‡ entidade genÈrica T
+    // Contexto do banco usado para persist√™ncia.
     protected readonly AppDbContext _context;
+    // Conjunto de dados da entidade gen√©rica.
     protected readonly DbSet<T> _dbSet;
 
-    // Construtor que recebe o AppDbContext como dependÍncia e inicializa o DbSet<T> para a entidade genÈrica T
+    // Recebe o contexto via inje√ß√£o de depend√™ncia.
     public Repository(AppDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<T>();
     }
 
-    // MÈtodo para obter uma entidade do banco de dados pelo seu ID
+    // Busca uma entidade pelo identificador.
     public async Task<T?> GetByIdAsync(int id)
     {
         return await _dbSet.FindAsync(id);
     }
 
-    // MÈtodo para obter todas as entidades do banco de dados
+    // Retorna todas as entidades desse tipo.
     public async Task<List<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
 
-    // MÈtodo para adicionar uma nova entidade ao banco de dados
+    // Adiciona uma nova entidade e salva as altera√ß√µes.
     public async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
-    // MÈtodo para atualizar uma entidade existente no banco de dados
+
+    // Atualiza uma entidade existente e salva as altera√ß√µes.
     public async Task UpdateAsync(T entity)
     {
         _dbSet.Update(entity);
         await _context.SaveChangesAsync();
     }
-    // MÈtodo para excluir uma entidade do banco de dados
+
+    // Remove uma entidade e salva as altera√ß√µes.
     public async Task DeleteAsync(T entity)
     {
         _dbSet.Remove(entity);
         await _context.SaveChangesAsync();
     }
-    // Propriedade virtual com implementaÁ„o padr„o
+
+    // Exposi√ß√£o padr√£o da consulta para customiza√ß√µes em classes filhas.
     protected virtual IQueryable<T> Queryable => _dbSet;
 
-    // Propriedade virtual para lista (pode incluir relationships se quiser sobrescrever)
+    // Exposi√ß√£o padr√£o da consulta de listagem para customiza√ß√µes em classes filhas.
     protected virtual IQueryable<T> QueryableList => _dbSet;
 }
