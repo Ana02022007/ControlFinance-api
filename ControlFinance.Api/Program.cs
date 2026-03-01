@@ -35,11 +35,11 @@ builder.Services.AddCors(options =>
 });
 
 
-
-// Constrói o pipeline HTTP da aplicação.
+// Habilita geração da documentação Swagger.
 var app = builder.Build();
 
-// Habilita geração da documentação Swagger.
+app.UseCors("AllowReactDev");
+
 app.UseSwagger();
 app.UseSwaggerUI();
 

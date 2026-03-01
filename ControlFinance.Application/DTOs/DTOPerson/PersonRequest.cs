@@ -10,6 +10,6 @@ namespace ControlFinance.Application.DTOs.DTOPerson
         // Data de nascimento da pessoa.
         public DateTime BirthDate { get; set; }
         // Lista de transações associadas recebidas na requisição.
-        public List<TransactionRequest> Transaction { get; set; }
+        public List<TransactionRequest?> Transaction { get; set; }
     }
 }
