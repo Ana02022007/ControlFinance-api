@@ -42,7 +42,7 @@ namespace ControlFinance.Api.Controllers
         public async Task<ActionResult<TransactionResponse>> CreateTransaction([FromBody] TransactionRequest request)
         {
             // Envia os dados recebidos para criar uma nova transação.
-            return await _services.CreateTransaction(request);
+             return await _services.CreateTransaction(request);
         }
     }
 }

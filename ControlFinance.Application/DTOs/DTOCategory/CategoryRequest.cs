@@ -1,4 +1,5 @@
-﻿using ControlFinance.Domain.Entities.Enums;
+﻿using ControlFinance.Application.DTOs.DTOTransaction;
+using ControlFinance.Domain.Entities.Enums;
 
 namespace ControlFinance.Application.DTOs.DTOCategory
 {

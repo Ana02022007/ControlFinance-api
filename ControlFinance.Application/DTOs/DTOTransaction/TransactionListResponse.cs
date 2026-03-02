@@ -19,5 +19,9 @@ namespace ControlFinance.Application.DTOs.DTOTransaction
         public int PersonId { get; set; }
         // Id da categoria associada à transação.
         public int CategoriesId { get; set; }
+        //nome da categoria
+        public string CategoryName { get; set; }
+        //nome da pessoa
+        public string PersonName { get; set; }
     }
 }

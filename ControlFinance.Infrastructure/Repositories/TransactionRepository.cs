@@ -13,12 +13,15 @@ namespace ControlFinance.Infrastructure.Repositories
         // Consulta base para transação já incluindo categoria.
         protected override IQueryable<Transaction> Queryable =>
             _context.Set<Transaction>()
-                    .Include(p => p.Category);
+                    .Include(p => p.Category)
+            .Include(a => a.Person);
+
 
         // Consulta de listagem para transação já incluindo categoria.
         protected override IQueryable<Transaction> QueryableList =>
             _context.Set<Transaction>()
-                    .Include(p => p.Category);
-   
+                    .Include(p => p.Category)
+              .Include(a => a.Person);
+
     }
 }

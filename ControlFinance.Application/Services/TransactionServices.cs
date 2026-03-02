@@ -42,44 +42,40 @@ namespace ControlFinance.Application.Services
 
         public async Task<TransactionResponse> CreateTransaction(TransactionRequest request)
         {
-            // Verifica se a pessoa informada existe.
-            var person = await _personRepository.GetByIdAsync(request.PersonId) ?? throw new Exception("Pessoa não encontrada.");
-            // Verifica se a categoria informada existe.
-            var category = await _categoryRepository.GetByIdAsync(request.CategoriesId) ?? throw new Exception("Categoria não encontrada.");
+            var person = await _personRepository.GetByIdAsync(request.PersonId)
+                         ?? throw new Exception("Pessoa não encontrada.");
+            var category = await _categoryRepository.GetByIdAsync(request.CategoriesId)
+                           ?? throw new Exception("Categoria não encontrada.");
 
-            // Calcula a idade da pessoa para aplicar regras de negócio.
+            // 1. Validação de Valor
+            if (request.Value <= 0)
+                throw new Exception("O valor da transação deve ser positivo.");
+
+            // 2. Validação de Compatibilidade Categoria vs Transação
+            // Verifique se os IDs/Enums batem (Ex: Receita = 0, Despesa = 1)
+            if ((int)request.Type != (int)category.Purpose)
+            {
+                throw new Exception("A categoria selecionada não é compatível com o tipo de transação.");
+            }
+
+            // 3. Validação de Idade
             var today = DateTime.Today;
             var age = today.Year - person.BirthDate.Year;
+            if (person.BirthDate.Date > today.AddYears(-age)) age--;
 
-            // Valida se o valor da transação é positivo.
-            if (request.Value > 0)
+            if (age < 18)
             {
-                // Ajusta a idade se o aniversário ainda não ocorreu no ano atual.
-                if (person.BirthDate.Date > today.AddYears(-age)) age--;
-
-                // Impede receita para menores de 18 anos.
-                if (age < 18 && request.Type == TypeTransaction.RECEITA)
+                // Se for menor de 18, SÓ pode DESPESA. 
+                // Se o tipo for RECEITA (0), ele barra.
+                if (request.Type == TypeTransaction.RECEITA)
                 {
                     throw new Exception("Menores de 18 anos só podem registrar despesas.");
                 }
-
-                // Garante compatibilidade entre tipo da transação e finalidade da categoria.
-                if ((int)request.Type != (int)category.Purpose)
-                {
-                    throw new Exception("O tipo da transação deve ser compatível com o finalidade da categoria selecionada.");
-                }
-            }
-            else
-            {
-                throw new Exception("O valor da transação deve ser positivo.");
             }
 
-            // Converte os dados recebidos para a entidade de domínio.
+            // Se passou por tudo, salva
             Transaction transaction = request.ConvertToEntity();
-
-            // Persiste a nova transação no banco.
             await _repository.AddAsync(transaction);
-            // Retorna os dados da transação criada.
             return transaction.ConvertToResponse();
         }
     }

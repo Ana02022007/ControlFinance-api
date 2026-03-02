@@ -35,7 +35,9 @@ namespace ControlFinance.Application.Mappers
                 Date = transaction.Date,
                 Type = transaction.Type,
                 PersonId = transaction.PersonId,
-                CategoriesId = transaction.CategoriesId
+                CategoriesId = transaction.CategoriesId,
+                PersonName = transaction.Person?.Name ?? "Sem Nome",
+                CategoryName = transaction.Category?.Description ?? "Sem Categoria"
             };
         }
 
@@ -50,7 +52,9 @@ namespace ControlFinance.Application.Mappers
                 Date = transaction.Date,
                 Type = transaction.Type,
                 PersonId = transaction.PersonId,
-                CategoriesId = transaction.CategoriesId
+                CategoriesId = transaction.CategoriesId,
+                PersonName = transaction.Person?.Name ?? "Sem Nome",
+                CategoryName = transaction.Category?.Description ?? "Sem Categoria"
             };
         }
     }

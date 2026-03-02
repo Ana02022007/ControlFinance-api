@@ -19,15 +19,15 @@ public class Repository<T> : IRepository<T> where T : class
     // Busca uma entidade pelo identificador.
     public async Task<T?> GetByIdAsync(int id)
     {
-        return await _dbSet.FindAsync(id);
+        return await Queryable.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id);
     }
 
     // Retorna todas as entidades desse tipo.
     public async Task<List<T>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        // IMPORTANTE: Mudamos de '_dbSet' para 'QueryableList'
+        return await QueryableList.ToListAsync();
     }
-
     // Adiciona uma nova entidade e salva as alterações.
     public async Task AddAsync(T entity)
     {

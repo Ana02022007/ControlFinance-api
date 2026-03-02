@@ -6,8 +6,13 @@ using ControlFinance.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Registra suporte a controllers.
-builder.Services.AddControllers();
-
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters
+            .Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 // Configura o DbContext com SQLite e assembly de migrations.
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=ControlFinance.db",
@@ -28,7 +33,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactDev", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173") // Vite
+            .WithOrigins(
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175"
+) // ← VITE
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -38,7 +47,6 @@ builder.Services.AddCors(options =>
 // Habilita geração da documentação Swagger.
 var app = builder.Build();
 
-app.UseCors("AllowReactDev");
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -46,6 +54,7 @@ app.UseSwaggerUI();
 // Força redirecionamento para HTTPS.
 app.UseHttpsRedirection();
 
+app.UseCors("AllowReactDev");
 // Mapeia os endpoints dos controllers.
 app.MapControllers();
 
